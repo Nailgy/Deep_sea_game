@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "lint": "eslint script.js"
+  },
   "devDependencies": {
     "prettier": "2.6.2"
   },
