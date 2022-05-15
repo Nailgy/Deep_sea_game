@@ -9,3 +9,12 @@ const EMPTY_TILE = {value: 0, isFree: false};
 const SUBMARINE = {value: 'submarine', isFree: true, playersAboard: []};
 const DOWNWARDS = 1;
 const UPWARDS = -1;
+
+class Field {
+  constructor(treasuresAtOneLevel, levelsOfTreasures, maxOxygen) {
+    this.treasuresAtOneLevel = treasuresAtOneLevel;
+    this.levelsOfTreasures = levelsOfTreasures;
+    this.maxOxygen = maxOxygen;
+    this.currentOxygenL = maxOxygen;
+  }
+}
