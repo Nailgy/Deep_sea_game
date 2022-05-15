@@ -18,3 +18,12 @@ class Field {
     this.currentOxygenL = maxOxygen;
   }
 }
+
+class Player {
+  constructor(position = 0, treasures = []) {
+    this.position = position;
+    this.treasures = treasures;
+    this.direction = direction; 
+    this.totalPoints = 0;
+  }
+}
