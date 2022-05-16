@@ -15,7 +15,15 @@ class Field {
     this.treasuresAtOneLevel = treasuresAtOneLevel;
     this.levelsOfTreasures = levelsOfTreasures;
     this.maxOxygen = maxOxygen;
-    this.currentOxygenL = maxOxygen;
+    this.currentOxygen = maxOxygen;
+
+    const tiles = [];
+    tiles[0] = SUBMARINE;
+    for(const level of this.levelsOfTreasures) {
+      const obj = { value: level, isFree: true };
+      pushMultipleTimes(obj, this.treasuresAtOneLevel, tiles);
+    }
+    this.tiles = tiles;
   }
 }
 
@@ -25,5 +33,11 @@ class Player {
     this.treasures = treasures;
     this.direction = DOWNWARDS;
     this.totalPoints = 0;
+  }
+}
+
+const pushMultipleTimes = (element, numberOfTimes, arr) => {
+  for(let i = 0; i < numberOfTimes; i++) {
+    arr.push(element);
   }
 }
