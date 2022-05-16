@@ -112,3 +112,12 @@ const pushMultipleTimes = (element, numberOfTimes, arr) => {
     arr.push(element);
   }
 }
+
+const randNumFromRange = (max, min = 0) => Math.floor((max - min) * Math.random() + min) // right border does not include
+
+const rollTwoDices = (diceValues) => {
+  const max = diceValues.length;
+  const firstDiceIndex = randNumFromRange(max); 
+  const secondDiceIndex = randNumFromRange(max)
+  return diceValues[firstDiceIndex] + diceValues[secondDiceIndex];
+}
