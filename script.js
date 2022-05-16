@@ -121,3 +121,9 @@ const rollTwoDices = (diceValues) => {
   const secondDiceIndex = randNumFromRange(max)
   return diceValues[firstDiceIndex] + diceValues[secondDiceIndex];
 }
+
+const randValueFromTreasure = (levelOfTreasure) => {
+  const max = levelOfTreasure * RANGE_FOR_EACH_LEVEL;
+  const min = max - RANGE_FOR_EACH_LEVEL;
+  return randNumFromRange(max, min);
+}
