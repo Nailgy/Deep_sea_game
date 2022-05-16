@@ -19,7 +19,7 @@ class Field {
 
     const tiles = [];
     tiles[0] = SUBMARINE;
-    for(const level of this.levelsOfTreasures) {
+    for (const level of this.levelsOfTreasures) {
       const obj = { value: level, isFree: true };
       pushMultipleTimes(obj, this.treasuresAtOneLevel, tiles);
     }
@@ -47,8 +47,8 @@ class Field {
   }
 
   takeTresure(index) {
-    const currentTreasure = tiles[index].value;
-    this.tiles[index] = EMPTY_TILE; 
+    const currentTreasure = this.tiles[index].value;
+    this.tiles[index] = EMPTY_TILE;
     return currentTreasure;
   }
 
@@ -56,7 +56,7 @@ class Field {
     this.tiles[index].value = treasure;
     this.freeUpTile(index);
   }
-  
+
   movePlayerDown(startingIndex, number, numberOfTreasures) {
     const length = this.tiles.length;
     this.freeUpTile(startingIndex);
@@ -65,14 +65,11 @@ class Field {
 
     while (stepsRemain > 0) {
       currentIndex += DOWNWARDS;
-      if(!this.tiles[currentIndex].isFree) {
-        currentIndex += DOWNWARDS;
-      }
-      if(currentIndex < length) {
-        stepsRemain--;
-      }
+      if (!this.tiles[currentIndex].isFree) currentIndex += DOWNWARDS;
+
+      if (currentIndex < length) stepsRemain--;
       else {
-        if(this.tiles[length - 1].isFree) currentIndex = length - 1;
+        if (this.tiles[length - 1].isFree) currentIndex = length - 1;
         else currentIndex = length - 2;
         break;
       }
@@ -82,16 +79,16 @@ class Field {
   }
 
   movePlayerUp(startingIndex, number, numberOfTreasures) {
-    const length = this.tiles.length;
     this.freeUpTile(startingIndex);
     let stepsRemain = number - numberOfTreasures;
     let currentIndex = startingIndex;
 
     while (stepsRemain > 0) {
       currentIndex += UPWARDS;
-      if(!this.tiles[currentIndex].isFree) {
+      if (!this.tiles[currentIndex].isFree) {
         currentIndex += UPWARDS;
       }
+      stepsRemain--;
     }
     currentIndex = Math.max(currentIndex, 0);
     return currentIndex;
@@ -124,34 +121,39 @@ class Player {
     this.treasures.push(treasureLevel);
   }
 
-  removeTreasure (treasureLevel) {
+  removeTreasure(treasureLevel) {
     const index = this.treasures.indexOf(treasureLevel);
     treasureLevel.splice(index, 1);
   }
 
   countValueOfTreasures() {
-    this.treasures.forEach((element) => this.totalPoints += randValueFromTreasure(element));
+    this.treasures.forEach(element => {
+      this.totalPoints += randValueFromTreasure(element);
+    });
     this.treasures = [];
   }
 }
 
 const pushMultipleTimes = (element, numberOfTimes, arr) => {
-  for(let i = 0; i < numberOfTimes; i++) {
+  for (let i = 0; i < numberOfTimes; i++) {
     arr.push(element);
   }
-}
+};
 
-const randNumFromRange = (max, min = 0) => Math.floor((max - min) * Math.random() + min) // right border does not include
+const randNumFromRange = (max, min = 0) => {
+  const value = Math.floor((max - min) * Math.random() + min);
+  return value; // right border does not include
+};
 
-const rollTwoDices = (diceValues) => {
+const rollTwoDices = diceValues => {
   const max = diceValues.length;
-  const firstDiceIndex = randNumFromRange(max); 
-  const secondDiceIndex = randNumFromRange(max)
+  const firstDiceIndex = randNumFromRange(max);
+  const secondDiceIndex = randNumFromRange(max);
   return diceValues[firstDiceIndex] + diceValues[secondDiceIndex];
-}
+};
 
-const randValueFromTreasure = (levelOfTreasure) => {
+const randValueFromTreasure = levelOfTreasure => {
   const max = levelOfTreasure * RANGE_FOR_EACH_LEVEL;
   const min = max - RANGE_FOR_EACH_LEVEL;
   return randNumFromRange(max, min);
-}
+};
