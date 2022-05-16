@@ -25,6 +25,19 @@ class Field {
     }
     this.tiles = tiles;
   }
+
+  resetOxygen() {
+    this.currentOxygen = this.maxOxygen;
+  }
+
+  reduceOxygen(amount) {
+    this.currentOxygen -= amount;
+  }
+
+  isOxygenLeft() {
+    return this.currentOxygen > 0;
+  }
+  
 }
 
 class Player {
