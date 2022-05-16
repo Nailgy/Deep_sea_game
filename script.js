@@ -57,6 +57,29 @@ class Field {
     this.freeUpTile(index);
   }
   
+  movePlayerDown(startingIndex, number, numberOfTreasures) {
+    const length = this.tiles.length;
+    this.freeUpTile(startingIndex);
+    let stepsRemain = number + numberOfTreasures;
+    let currentIndex = startingIndex;
+
+    while (stepsRemain > 0) {
+      currentIndex += DOWNWARDS;
+      if(!this.tiles[currentIndex].isFree) {
+        currentIndex += DOWNWARDS;
+      }
+      if(currentIndex < length) {
+        stepsRemain--;
+      }
+      else {
+        if(this.tiles[length - 1].isFree) currentIndex = length - 1;
+        else currentIndex = length - 2;
+        break;
+      }
+    }
+    this.occupyTile(currentIndex);
+    return currentIndex;
+  }
 }
 
 class Player {
