@@ -119,6 +119,15 @@ class Player {
   moveUp() {
     this.direction = UPWARDS;
   }
+
+  addTreasure(treasureLevel) {
+    this.treasures.push(treasureLevel);
+  }
+
+  removeTreasure (treasureLevel) {
+    const index = this.treasures.indexOf(treasureLevel);
+    treasureLevel.splice(index, 1);
+  }
 }
 
 const pushMultipleTimes = (element, numberOfTimes, arr) => {
