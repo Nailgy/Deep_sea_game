@@ -10,6 +10,30 @@ const SUBMARINE = { value: 'submarine', isFree: true, playersAboard: [] };
 const DOWNWARDS = 1;
 const UPWARDS = -1;
 
+const pushMultipleTimes = (element, numberOfTimes, arr) => {
+  for (let i = 0; i < numberOfTimes; i++) {
+    arr.push(element);
+  }
+};
+
+const randNumFromRange = (max, min = 0) => {
+  const value = Math.floor((max - min) * Math.random() + min);
+  return value; // right border does not include
+};
+
+const rollTwoDices = diceValues => {
+  const max = diceValues.length;
+  const firstDiceIndex = randNumFromRange(max);
+  const secondDiceIndex = randNumFromRange(max);
+  return diceValues[firstDiceIndex] + diceValues[secondDiceIndex];
+};
+
+const randValueFromTreasure = levelOfTreasure => {
+  const max = levelOfTreasure * RANGE_FOR_EACH_LEVEL;
+  const min = max - RANGE_FOR_EACH_LEVEL;
+  return randNumFromRange(max, min);
+};
+
 class Field {
   constructor(treasuresAtOneLevel, levelsOfTreasures, maxOxygen) {
     this.treasuresAtOneLevel = treasuresAtOneLevel;
@@ -133,27 +157,3 @@ class Player {
     this.treasures = [];
   }
 }
-
-const pushMultipleTimes = (element, numberOfTimes, arr) => {
-  for (let i = 0; i < numberOfTimes; i++) {
-    arr.push(element);
-  }
-};
-
-const randNumFromRange = (max, min = 0) => {
-  const value = Math.floor((max - min) * Math.random() + min);
-  return value; // right border does not include
-};
-
-const rollTwoDices = diceValues => {
-  const max = diceValues.length;
-  const firstDiceIndex = randNumFromRange(max);
-  const secondDiceIndex = randNumFromRange(max);
-  return diceValues[firstDiceIndex] + diceValues[secondDiceIndex];
-};
-
-const randValueFromTreasure = levelOfTreasure => {
-  const max = levelOfTreasure * RANGE_FOR_EACH_LEVEL;
-  const min = max - RANGE_FOR_EACH_LEVEL;
-  return randNumFromRange(max, min);
-};
