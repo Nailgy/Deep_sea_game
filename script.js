@@ -105,6 +105,12 @@ class Player {
     this.direction = DOWNWARDS;
     this.totalPoints = 0;
   }
+
+  reset() {
+    this.position = 0;
+    this.treasures = [];
+    this.direction = DOWNWARD;
+  }
 }
 
 const pushMultipleTimes = (element, numberOfTimes, arr) => {
