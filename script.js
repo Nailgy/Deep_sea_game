@@ -37,7 +37,14 @@ class Field {
   isOxygenLeft() {
     return this.currentOxygen > 0;
   }
-  
+
+  occupyTile(index) {
+    this.tiles[index].isFree = false;
+  }
+
+  freeUpTile(index) {
+    this.tiles[index].isFree = true;
+  }
 }
 
 class Player {
