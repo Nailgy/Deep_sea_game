@@ -111,6 +111,14 @@ class Player {
     this.treasures = [];
     this.direction = DOWNWARD;
   }
+
+  numberOfTreasures() {
+    return this.treasures.length;
+  }
+
+  moveUp() {
+    this.direction = UPWARDS;
+  }
 }
 
 const pushMultipleTimes = (element, numberOfTimes, arr) => {
