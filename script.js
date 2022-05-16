@@ -128,6 +128,11 @@ class Player {
     const index = this.treasures.indexOf(treasureLevel);
     treasureLevel.splice(index, 1);
   }
+
+  countValueOfTreasures() {
+    this.treasures.forEach((element) => this.totalPoints += randValueFromTreasure(element));
+    this.treasures = [];
+  }
 }
 
 const pushMultipleTimes = (element, numberOfTimes, arr) => {
