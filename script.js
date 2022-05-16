@@ -157,3 +157,7 @@ class Player {
     this.treasures = [];
   }
 }
+
+const field = new Field(TREASURES_AT_ONE_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN);
+const player1 = new Player();
+const player2 = new Player();
