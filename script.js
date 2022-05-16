@@ -45,6 +45,18 @@ class Field {
   freeUpTile(index) {
     this.tiles[index].isFree = true;
   }
+
+  takeTresure(index) {
+    const currentTreasure = tiles[index].value;
+    this.tiles[index] = EMPTY_TILE; 
+    return currentTreasure;
+  }
+
+  replaceEmptyTile(index, treasure) {
+    this.tiles[index].value = treasure;
+    this.freeUpTile(index);
+  }
+  
 }
 
 class Player {
