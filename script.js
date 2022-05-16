@@ -109,7 +109,7 @@ class Player {
   reset() {
     this.position = 0;
     this.treasures = [];
-    this.direction = DOWNWARD;
+    this.direction = DOWNWARDS;
   }
 
   numberOfTreasures() {
