@@ -16,22 +16,22 @@ const dup = (value, number) => {
   return arr;
 };
 
-const randNumFromRange = (max, min = 0) => {
+const rand = (max, min = 0) => {
   const value = Math.floor((max - min) * Math.random() + min);
   return value; // right border does not include
 };
 
 const rollTwoDices = diceValues => {
   const max = diceValues.length;
-  const firstDiceIndex = randNumFromRange(max);
-  const secondDiceIndex = randNumFromRange(max);
+  const firstDiceIndex = rand(max);
+  const secondDiceIndex = rand(max);
   return diceValues[firstDiceIndex] + diceValues[secondDiceIndex];
 };
 
 const randValueFromTreasure = levelOfTreasure => {
   const max = levelOfTreasure * RANGE_FOR_EACH_LEVEL;
   const min = max - RANGE_FOR_EACH_LEVEL;
-  return randNumFromRange(max, min);
+  return rand(max, min);
 };
 
 class Field {
@@ -162,4 +162,4 @@ class Player {
 const field = new Field(TREASURES_AT_ONE_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN);
 const player1 = new Player();
 const player2 = new Player();
-console.dir(player1)
+
