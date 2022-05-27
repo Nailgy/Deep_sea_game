@@ -91,12 +91,13 @@ class Field {
       currentIndex += DOWNWARDS;
       if (!this.tiles[currentIndex].isFree) currentIndex += DOWNWARDS;
 
-      if (currentIndex < length) stepsRemain--;
-      else {
+      if (currentIndex < length) {
+        stepsRemain--;
+        continue;
+      }
         if (this.tiles[length - 1].isFree) currentIndex = length - 1;
         else currentIndex = length - 2;
         break;
-      }
     }
     this.occupyTile(currentIndex);
     return currentIndex;
