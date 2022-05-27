@@ -44,7 +44,7 @@ class Field {
     let tiles = [SUBMARINE];
     for (const level of this.levelsOfTreasures) {
       const obj = { value: level, isFree: true };
-      const arr = dup(level, this.treasuresAtOneLevel);
+      const arr = dup(obj, this.treasuresAtOneLevel);
       tiles = tiles.concat(arr);
     }
     this.tiles = tiles;
@@ -95,9 +95,9 @@ class Field {
         stepsRemain--;
         continue;
       }
-        if (this.tiles[length - 1].isFree) currentIndex = length - 1;
-        else currentIndex = length - 2;
-        break;
+      if (this.tiles[length - 1].isFree) currentIndex = length - 1;
+      else currentIndex = length - 2;
+      break;
     }
     this.occupyTile(currentIndex);
     return currentIndex;
