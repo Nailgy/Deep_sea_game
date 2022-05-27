@@ -10,10 +10,10 @@ const SUBMARINE = { value: 'submarine', isFree: true, playersAboard: [] };
 const DOWNWARDS = 1;
 const UPWARDS = -1;
 
-const pushMultipleTimes = (element, numberOfTimes, arr) => {
-  for (let i = 0; i < numberOfTimes; i++) {
-    arr.push(element);
-  }
+const dup = (value, number) => {
+  const arr = new Array(number);
+  arr.fill(value);
+  return arr;
 };
 
 const randNumFromRange = (max, min = 0) => {
@@ -41,11 +41,11 @@ class Field {
     this.maxOxygen = maxOxygen;
     this.currentOxygen = maxOxygen;
 
-    const tiles = [];
-    tiles[0] = SUBMARINE;
+    let tiles = [SUBMARINE];
     for (const level of this.levelsOfTreasures) {
       const obj = { value: level, isFree: true };
-      pushMultipleTimes(obj, this.treasuresAtOneLevel, tiles);
+      const arr = dup(level, this.treasuresAtOneLevel);
+      tiles = tiles.concat(arr);
     }
     this.tiles = tiles;
   }
@@ -162,3 +162,4 @@ class Player {
 const field = new Field(TREASURES_AT_ONE_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN);
 const player1 = new Player();
 const player2 = new Player();
+console.dir(player1)
