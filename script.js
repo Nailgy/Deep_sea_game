@@ -176,11 +176,11 @@ const main = () => {
   let activePlayerIndex = 0;
   //now do only js mechanics of game, html & css realisation will be added later
   while(field.isOxygenLeft()) {
-    
+    const activePlayer = players[activePlayerIndex];
     //making skip and take button inactive in css
     btnChange.addEventListener('click', () => {
-
-    })
+      activePlayer.moveUp();
+    });
   }
 };
 main();
