@@ -8,12 +8,9 @@
   font-size: 1.8rem;
   text-transform: uppercase;
   font-weight: 500;
-
-
-
-  padding: 0.7rem 2.5rem;
+  cursor: pointer;
+  padding: 0.6rem;
   border-radius: 50rem;
- 
 }
 
 .btn--moveup {
