@@ -182,5 +182,16 @@ const main = () => {
     activePlayer.moveUp();
   });
 
+  btnRoll.addEventListener('click', () => {
+    activePlayer.moveUp();
+  });
+
+  btnTake.addEventListener('click', () => {
+    activePlayer.moveUp();
+  });
+
+  btnSkip.addEventListener('click', () => {
+    activePlayer.moveUp();
+  });
 };
 main();
