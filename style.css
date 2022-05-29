@@ -1,0 +1,35 @@
+.btn {
+  position: absolute;
+  width: 23rem;
+  right: 3%;
+  color: #444;
+  background: none;
+  border-color:#444;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  font-weight: 500;
+
+
+
+  padding: 0.7rem 2.5rem;
+  border-radius: 50rem;
+ 
+}
+
+.btn--change {
+  bottom: 24%;
+}
+
+.btn--roll {
+  bottom: 17%;
+}
+
+.btn--take {
+  bottom: 10%;
+}
+
+.btn--skip {
+  bottom: 3%;
+}
+
+
