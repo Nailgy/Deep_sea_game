@@ -21,17 +21,22 @@ const rand = (max, min = 0) => {
   return value; // right border does not include
 };
 
-const rollTwoDices = diceValues => {
+const rollTwoDices = (diceValues) => {
   const max = diceValues.length;
   const firstDiceIndex = rand(max);
   const secondDiceIndex = rand(max);
   return diceValues[firstDiceIndex] + diceValues[secondDiceIndex];
 };
 
-const randValueFromTreasure = levelOfTreasure => {
+const randValueFromTreasure = (levelOfTreasure) => {
   const max = levelOfTreasure * RANGE_FOR_EACH_LEVEL;
   const min = max - RANGE_FOR_EACH_LEVEL;
   return rand(max, min);
+};
+
+const switchPlayer = (activePlayer) => {
+  const newActivePlayer = (activePlayer === 0) ? 1 : 0;
+  return newActivePlayer;
 };
 
 class Field {
@@ -152,14 +157,20 @@ class Player {
   }
 
   countValueOfTreasures() {
-    this.treasures.forEach(element => {
+    this.treasures.forEach((element) => {
       this.totalPoints += randValueFromTreasure(element);
     });
     this.treasures = [];
   }
 }
 
-const field = new Field(TREASURES_AT_ONE_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN);
-const player1 = new Player();
-const player2 = new Player();
+const main = () => {
+  const field = new Field(TREASURES_AT_ONE_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN);
+  const player0 = new Player();
+  const player1 = new Player();
+  const players = [player0, player1];
+  let activePlayer = 0;
+
+};
+
 
