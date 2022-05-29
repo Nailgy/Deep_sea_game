@@ -9,6 +9,10 @@ const EMPTY_TILE = { value: 0, isFree: false };
 const SUBMARINE = { value: 'submarine', isFree: true, playersAboard: [] };
 const DOWNWARDS = 1;
 const UPWARDS = -1;
+const btnChange = document.querySelector('.btn--change');
+const btnRoll = document.querySelector('.btn--roll');
+const btnTake = document.querySelector('.btn--take');
+const btnSkip = document.querySelector('.btn--skip');
 
 const dup = (value, number) => {
   const arr = new Array(number);
@@ -170,7 +174,10 @@ const main = () => {
   const player1 = new Player();
   const players = [player0, player1];
   let activePlayer = 0;
+  //now do only js mechanics of game, html & css realisation will be added later
+  while(field.isOxygenLeft()) {
+    //making skip and take button inactive
 
+  }
 };
-
-
+main();
