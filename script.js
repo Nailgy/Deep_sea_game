@@ -38,9 +38,9 @@ const randValueFromTreasure = (levelOfTreasure) => {
   return rand(max, min);
 };
 
-const switchPlayer = (activePlayer) => {
-  const newActivePlayer = (activePlayer === 0) ? 1 : 0;
-  return newActivePlayer;
+const switchPlayer = (activePlayerIndex) => {
+  const newIndex = (activePlayerIndex === 0) ? 1 : 0;
+  return newIndex;
 };
 
 class Field {
@@ -173,11 +173,14 @@ const main = () => {
   const player0 = new Player();
   const player1 = new Player();
   const players = [player0, player1];
-  let activePlayer = 0;
+  let activePlayerIndex = 0;
   //now do only js mechanics of game, html & css realisation will be added later
   while(field.isOxygenLeft()) {
-    //making skip and take button inactive
+    
+    //making skip and take button inactive in css
+    btnChange.addEventListener('click', () => {
 
+    })
   }
 };
 main();
