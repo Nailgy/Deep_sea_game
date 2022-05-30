@@ -38,6 +38,13 @@ const randValueFromTreasure = (levelOfTreasure) => {
   return rand(max, min);
 };
 
+const arrayFilter = (condition, arr, success, fail) => {
+  for(const element of arr) {
+    if(condition(element)) success(element);
+    else fail(element);
+  }
+};
+
 const switchPlayer = (activePlayerIndex) => {
   const newIndex = (activePlayerIndex === 0) ? 1 : 0;
   return newIndex;
@@ -143,6 +150,13 @@ class Player {
     this.direction = DOWNWARDS;
   }
 
+  changePos(newPos) {
+    this.position = newPos;
+  }
+
+  isAboard() {
+    return this.position === 0;
+  }
   numberOfTreasures() {
     return this.treasures.length;
   }
@@ -174,16 +188,35 @@ const main = () => {
   const player1 = new Player();
   const players = [player0, player1];
   let activePlayerIndex = 0;
+  const activePlayer = players[activePlayerIndex];
   //now do only js mechanics of game, html & css realisation will be added later
 
-   const activePlayer = players[activePlayerIndex];
   //making skip and take button inactive in css
   btnMoveUp.addEventListener('click', () => {
     activePlayer.moveUp();
   });
 
   btnRoll.addEventListener('click', () => {
-    activePlayer.moveUp();
+    const value = rollTwoDices(DICE_VALUES);
+    //showing rolled dices on screen
+    const dir = activePlayer.direction;
+    const pos = activePlayer.position;
+    const num = activePlayer.numberOfTreasures();
+    field.reduceOxygen(num);
+    if(dir === DOWNWARDS) {
+      const newPos = field.movePlayerDown(pos, value, num);
+      activePlayer.changePos(newPos);
+      //moving player to new position on screen
+    }
+    else {
+      const newPos = field.movePlayerUp(pos, value, num);
+      activePlayer.changePos(newPos);
+      //moving player to new position on screen
+    }
+    if(activePlayer.isAboard()) {
+      activePlayer.countValueOfTreasures();
+      //display totalPoints of activePlayer;
+    }
   });
 
   btnTake.addEventListener('click', () => {
