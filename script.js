@@ -39,8 +39,8 @@ const randValueFromTreasure = (levelOfTreasure) => {
 };
 
 const arrayFilter = (condition, arr, success, fail) => {
-  for(const element of arr) {
-    if(condition(element)) success(element);
+  for (const element of arr) {
+    if (condition(element)) success(element);
     else fail(element);
   }
 };
@@ -203,17 +203,16 @@ const main = () => {
     const pos = activePlayer.position;
     const num = activePlayer.numberOfTreasures();
     field.reduceOxygen(num);
-    if(dir === DOWNWARDS) {
+    if (dir === DOWNWARDS) {
       const newPos = field.movePlayerDown(pos, value, num);
       activePlayer.changePos(newPos);
       //moving player to new position on screen
-    }
-    else {
+    } else {
       const newPos = field.movePlayerUp(pos, value, num);
       activePlayer.changePos(newPos);
       //moving player to new position on screen
     }
-    if(activePlayer.isAboard()) {
+    if (activePlayer.isAboard()) {
       activePlayer.countValueOfTreasures();
       //display totalPoints of activePlayer;
     }
@@ -222,7 +221,7 @@ const main = () => {
   btnTake.addEventListener('click', () => {
     const pos = activePlayer.position;
     const treasure = field.takeTresure(pos);
-    if(treasure) activePlayer.addTreasure(treasure);
+    if (treasure) activePlayer.addTreasure(treasure);
   });
 
   btnSkip.addEventListener('click', () => {
