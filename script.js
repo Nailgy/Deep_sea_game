@@ -223,11 +223,17 @@ const main = () => {
       });
     }
     activePlayerIndex = switchPlayer(activePlayerIndex);
-
+    //blurring old player and making active another
   });
 
   btnSkip.addEventListener('click', () => {
-    activePlayer.moveUp();
+    if (!field.isOxygenLeft) {
+      players.filter((player) => !player.isAboard).forEach((player) => {
+        player.reset;
+      });
+    }
+    activePlayerIndex = switchPlayer(activePlayerIndex);
+    //blurring old player and making active another
   });
 };
 main();
