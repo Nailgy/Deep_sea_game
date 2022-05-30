@@ -181,7 +181,7 @@ const main = () => {
   const player1 = new Player();
   const players = [player0, player1];
   let activePlayerIndex = 0;
-  const activePlayer = players[activePlayerIndex];
+  let activePlayer = players[activePlayerIndex];
   //now do only js mechanics of game, html & css realisation will be added later
 
   //making skip and take button inactive in css
@@ -223,6 +223,7 @@ const main = () => {
       });
     }
     activePlayerIndex = switchPlayer(activePlayerIndex);
+    activePlayer = players[activePlayerIndex];
     //blurring old player and making active another
   });
 
@@ -233,6 +234,7 @@ const main = () => {
       });
     }
     activePlayerIndex = switchPlayer(activePlayerIndex);
+    activePlayer = players[activePlayerIndex];
     //blurring old player and making active another
   });
 };
