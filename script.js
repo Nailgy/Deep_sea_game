@@ -38,13 +38,6 @@ const randValueFromTreasure = (levelOfTreasure) => {
   return rand(max, min);
 };
 
-const arrayFilter = (condition, arr, success, fail) => {
-  for (const element of arr) {
-    if (condition(element)) success(element);
-    else fail(element);
-  }
-};
-
 const switchPlayer = (activePlayerIndex) => {
   const newIndex = (activePlayerIndex === 0) ? 1 : 0;
   return newIndex;
@@ -222,6 +215,15 @@ const main = () => {
     const pos = activePlayer.position;
     const treasure = field.takeTresure(pos);
     if (treasure > 0) activePlayer.addTreasure(treasure);
+    //removing treasure from field and giving it to player
+
+    if (!field.isOxygenLeft) {
+      players.filter((player) => !player.isAboard).forEach((player) => {
+        player.reset;
+      });
+    }
+    activePlayerIndex = switchPlayer(activePlayerIndex);
+
   });
 
   btnSkip.addEventListener('click', () => {
