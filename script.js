@@ -220,7 +220,9 @@ const main = () => {
   });
 
   btnTake.addEventListener('click', () => {
-    activePlayer.moveUp();
+    const pos = activePlayer.position;
+    const treasure = field.takeTresure(pos);
+    if(treasure) activePlayer.addTreasure(treasure);
   });
 
   btnSkip.addEventListener('click', () => {
