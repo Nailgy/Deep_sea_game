@@ -6,7 +6,7 @@ const RANGE_FOR_EACH_LEVEL = 4;
 const DICE_VALUES = [1, 2, 3];
 const MAX_OXYGEN = 25;
 const EMPTY_TILE = { value: 0, isFree: false };
-const SUBMARINE = { value: 'submarine', isFree: true, playersAboard: [] };
+const SUBMARINE = { value: -1, isFree: true, playersAboard: [] };
 const DOWNWARDS = 1;
 const UPWARDS = -1;
 const btnMoveUp = document.querySelector('.btn--moveup');
@@ -221,7 +221,7 @@ const main = () => {
   btnTake.addEventListener('click', () => {
     const pos = activePlayer.position;
     const treasure = field.takeTresure(pos);
-    if (treasure) activePlayer.addTreasure(treasure);
+    if (treasure > 0) activePlayer.addTreasure(treasure);
   });
 
   btnSkip.addEventListener('click', () => {
