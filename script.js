@@ -150,6 +150,7 @@ class Player {
   isAboard() {
     return this.position === 0;
   }
+
   numberOfTreasures() {
     return this.treasures.length;
   }
@@ -175,67 +176,65 @@ class Player {
   }
 }
 
-const main = () => {
-  const field = new Field(TREASURES_AT_ONE_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN);
-  const player0 = new Player();
-  const player1 = new Player();
-  const players = [player0, player1];
-  let activePlayerIndex = 0;
-  let activePlayer = players[activePlayerIndex];
-  //now do only js mechanics of game, html & css realisation will be added later
+const field = new Field(TREASURES_AT_ONE_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN);
+const player0 = new Player();
+const player1 = new Player();
+const players = [player0, player1];
+let activePlayerIndex = 0;
+let activePlayer = players[activePlayerIndex];
+//now do only js mechanics of game, html & css realisation will be added later
 
-  //making skip and take button inactive in css
-  btnMoveUp.addEventListener('click', () => {
-    activePlayer.moveUp();
-  });
+//making skip and take button inactive in css
+btnMoveUp.addEventListener('click', () => {
+  activePlayer.moveUp();
+});
 
-  btnRoll.addEventListener('click', () => {
-    const value = rollTwoDices(DICE_VALUES);
-    //showing rolled dices on screen
-    const dir = activePlayer.direction;
-    const pos = activePlayer.position;
-    const num = activePlayer.numberOfTreasures();
-    field.reduceOxygen(num);
-    if (dir === DOWNWARDS) {
-      const newPos = field.movePlayerDown(pos, value, num);
-      activePlayer.changePos(newPos);
-      //moving player to new position on screen
-    } else {
-      const newPos = field.movePlayerUp(pos, value, num);
-      activePlayer.changePos(newPos);
-      //moving player to new position on screen
-    }
-    if (activePlayer.isAboard()) {
-      activePlayer.countValueOfTreasures();
-      //display totalPoints of activePlayer;
-    }
-  });
+btnRoll.addEventListener('click', () => {
+  const value = rollTwoDices(DICE_VALUES);
+  //showing rolled dices on screen
+  const dir = activePlayer.direction;
+  const pos = activePlayer.position;
+  const num = activePlayer.numberOfTreasures();
+  field.reduceOxygen(num);
+  if (dir === DOWNWARDS) {
+    const newPos = field.movePlayerDown(pos, value, num);
+    activePlayer.changePos(newPos);
+    //moving player to new position on screen
+  } else {
+    const newPos = field.movePlayerUp(pos, value, num);
+    activePlayer.changePos(newPos);
+    //moving player to new position on screen
+  }
+  if (activePlayer.isAboard()) {
+    activePlayer.countValueOfTreasures();
+    //display totalPoints of activePlayer;
+  }
+});
 
-  btnTake.addEventListener('click', () => {
-    const pos = activePlayer.position;
-    const treasure = field.takeTresure(pos);
-    if (treasure > 0) activePlayer.addTreasure(treasure);
-    //removing treasure from field and giving it to player
+btnTake.addEventListener('click', () => {
+  const pos = activePlayer.position;
+  const treasure = field.takeTresure(pos);
+  if (treasure > 0) activePlayer.addTreasure(treasure);
+  //removing treasure from field and giving it to player
 
-    if (!field.isOxygenLeft) {
-      players.filter((player) => !player.isAboard).forEach((player) => {
-        player.reset;
-      });
-    }
-    activePlayerIndex = switchPlayer(activePlayerIndex);
-    activePlayer = players[activePlayerIndex];
-    //blurring old player and making active another
-  });
+  if (!field.isOxygenLeft()) {
+    players.filter((player) => !player.isAboard).forEach((player) => {
+      player.reset;
+    });
+  }
+  activePlayerIndex = switchPlayer(activePlayerIndex);
+  activePlayer = players[activePlayerIndex];
+  //blurring old player and making active another
+});
 
-  btnSkip.addEventListener('click', () => {
-    if (!field.isOxygenLeft) {
-      players.filter((player) => !player.isAboard).forEach((player) => {
-        player.reset;
-      });
-    }
-    activePlayerIndex = switchPlayer(activePlayerIndex);
-    activePlayer = players[activePlayerIndex];
-    //blurring old player and making active another
-  });
-};
-main();
+btnSkip.addEventListener('click', () => {
+  if (!field.isOxygenLeft()) {
+    players.filter((player) => !player.isAboard).forEach((player) => {
+      player.reset;
+    });
+  }
+  activePlayerIndex = switchPlayer(activePlayerIndex);
+  activePlayer = players[activePlayerIndex];
+  //blurring old player and making active another
+});
+
