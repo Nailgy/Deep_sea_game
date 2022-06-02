@@ -1,12 +1,12 @@
 'use strict';
 
 const LEVELS_OF_TREASURES = [1, 2, 3, 4];
-const TREASURES_AT_ONE_LEVEL = 8;
+const TREASURES_AT_1_LEVEL = 8;
 const RANGE_FOR_EACH_LEVEL = 4;
 const DICE_VALUES = [1, 2, 3];
 const MAX_OXYGEN = 25;
 const EMPTY_TILE = { value: 0, isFree: false };
-const SUBMARINE = { value: -1, isFree: true, playersAboard: [] };
+const SUBMARINE = { value: -1, isFree: true };
 const DOWNWARDS = 1;
 const UPWARDS = -1;
 const btnMoveUp = document.querySelector('.btn--moveup');
@@ -17,7 +17,7 @@ const btnSkip = document.querySelector('.btn--skip');
 const dup = (value, number) => {
   const arr = new Array(number);
   arr.fill(value);
-  return arr;
+  return arr.map((value) => ({ ...value }));
 };
 
 const rand = (max, min = 0) => {
@@ -98,9 +98,8 @@ class Field {
 
     while (stepsRemain > 0) {
       currentIndex += DOWNWARDS;
-      if (!this.tiles[currentIndex].isFree) currentIndex += DOWNWARDS;
-
       if (currentIndex < length) {
+        if (!this.tiles[currentIndex].isFree) currentIndex += DOWNWARDS;
         stepsRemain--;
         continue;
       }
@@ -108,6 +107,7 @@ class Field {
       else currentIndex = length - 2;
       break;
     }
+
     this.occupyTile(currentIndex);
     return currentIndex;
   }
@@ -119,12 +119,16 @@ class Field {
 
     while (stepsRemain > 0) {
       currentIndex += UPWARDS;
-      if (!this.tiles[currentIndex].isFree) {
-        currentIndex += UPWARDS;
+      if (currentIndex >= 0) {
+        if (!this.tiles[currentIndex].isFree) currentIndex += UPWARDS;
+        stepsRemain--;
+        continue;
       }
-      stepsRemain--;
+      currentIndex = 0;
+      break;
     }
-    currentIndex = Math.max(currentIndex, 0);
+
+    if (currentIndex) this.occupyTile(currentIndex);
     return currentIndex;
   }
 }
@@ -176,7 +180,7 @@ class Player {
   }
 }
 
-const field = new Field(TREASURES_AT_ONE_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN);
+const field = new Field(TREASURES_AT_1_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN);
 const player0 = new Player();
 const player1 = new Player();
 const players = [player0, player1];
@@ -191,22 +195,27 @@ btnMoveUp.addEventListener('click', () => {
 
 btnRoll.addEventListener('click', () => {
   const value = rollTwoDices(DICE_VALUES);
+  console.dir(value + ' on dices');
   //showing rolled dices on screen
   const dir = activePlayer.direction;
   const pos = activePlayer.position;
   const num = activePlayer.numberOfTreasures();
   field.reduceOxygen(num);
+  console.dir(field.currentOxygen + ' oxygen');
   if (dir === DOWNWARDS) {
     const newPos = field.movePlayerDown(pos, value, num);
     activePlayer.changePos(newPos);
+    console.dir('new placement of ' + activePlayerIndex + ' is ' + newPos);
     //moving player to new position on screen
   } else {
     const newPos = field.movePlayerUp(pos, value, num);
     activePlayer.changePos(newPos);
+    console.dir('new placement of ' + activePlayerIndex + ' is ' + newPos);
     //moving player to new position on screen
   }
   if (activePlayer.isAboard()) {
     activePlayer.countValueOfTreasures();
+    console.dir('player ' + activePlayerIndex + ' saved and got ' + activePlayer.totalPoints);
     //display totalPoints of activePlayer;
   }
 });
@@ -216,14 +225,17 @@ btnTake.addEventListener('click', () => {
   const treasure = field.takeTresure(pos);
   if (treasure > 0) activePlayer.addTreasure(treasure);
   //removing treasure from field and giving it to player
-
+  console.dir(activePlayerIndex + 'got a treasure ' + treasure);
+  console.dir('oxygen left? ' + field.isOxygenLeft());
   if (!field.isOxygenLeft()) {
-    players.filter((player) => !player.isAboard).forEach((player) => {
-      player.reset;
+    players.filter((player) => !player.isAboard()).forEach((player) => {
+      player.reset();
+      console.dir(`${player} resetted `);
     });
   }
   activePlayerIndex = switchPlayer(activePlayerIndex);
   activePlayer = players[activePlayerIndex];
+  console.dir('swapped to ' + activePlayerIndex);
   //blurring old player and making active another
 });
 
@@ -231,10 +243,12 @@ btnSkip.addEventListener('click', () => {
   if (!field.isOxygenLeft()) {
     players.filter((player) => !player.isAboard).forEach((player) => {
       player.reset;
+      console.dir(`${player} resetted `);
     });
   }
   activePlayerIndex = switchPlayer(activePlayerIndex);
   activePlayer = players[activePlayerIndex];
+  console.dir('swapped to ' + activePlayerIndex);
   //blurring old player and making active another
 });
 
