@@ -81,7 +81,7 @@ class Field {
 
   takeTresure(index) {
     const currentTreasure = this.tiles[index].value;
-    this.tiles[index] = EMPTY_TILE;
+    this.tiles[index] = { ...EMPTY_TILE };
     return currentTreasure;
   }
 
@@ -95,7 +95,7 @@ class Field {
     this.freeUpTile(startingIndex);
     let stepsRemain = number + numberOfTreasures;
     let currentIndex = startingIndex;
-
+    
     while (stepsRemain > 0) {
       currentIndex += DOWNWARDS;
       if (currentIndex < length) {
@@ -226,7 +226,6 @@ btnTake.addEventListener('click', () => {
   if (treasure > 0) activePlayer.addTreasure(treasure);
   //removing treasure from field and giving it to player
   console.dir(activePlayerIndex + 'got a treasure ' + treasure);
-  console.dir('oxygen left? ' + field.isOxygenLeft());
   if (!field.isOxygenLeft()) {
     players.filter((player) => !player.isAboard()).forEach((player) => {
       player.reset();
@@ -235,7 +234,7 @@ btnTake.addEventListener('click', () => {
   }
   activePlayerIndex = switchPlayer(activePlayerIndex);
   activePlayer = players[activePlayerIndex];
-  console.dir('swapped to ' + activePlayerIndex);
+  console.dir('--- SWAP TO --- ' + activePlayerIndex);
   //blurring old player and making active another
 });
 
@@ -248,7 +247,7 @@ btnSkip.addEventListener('click', () => {
   }
   activePlayerIndex = switchPlayer(activePlayerIndex);
   activePlayer = players[activePlayerIndex];
-  console.dir('swapped to ' + activePlayerIndex);
+  console.dir('--- SWAP TO --- ' + activePlayerIndex);
   //blurring old player and making active another
 });
 
