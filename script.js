@@ -95,7 +95,7 @@ class Field {
     this.freeUpTile(startingIndex);
     let stepsRemain = number + numberOfTreasures;
     let currentIndex = startingIndex;
-    
+
     while (stepsRemain > 0) {
       currentIndex += DOWNWARDS;
       if (currentIndex < length) {
@@ -139,6 +139,7 @@ class Player {
     this.treasures = treasures;
     this.direction = DOWNWARDS;
     this.totalPoints = 0;
+    this.isSaved = false;
   }
 
   reset() {
@@ -151,8 +152,12 @@ class Player {
     this.position = newPos;
   }
 
-  isAboard() {
-    return this.position === 0;
+  save() {
+    this.isSaved = true;
+    for (const treasure of this.treasures) {
+      this.totalPoints += randValueFromTreasure(treasure);
+    }
+    this.treasures = [];
   }
 
   numberOfTreasures() {
@@ -213,8 +218,8 @@ btnRoll.addEventListener('click', () => {
     console.dir('new placement of ' + activePlayerIndex + ' is ' + newPos);
     //moving player to new position on screen
   }
-  if (activePlayer.isAboard()) {
-    activePlayer.countValueOfTreasures();
+  if (activePlayer.position === 0) {
+    activePlayer.save();
     console.dir('player ' + activePlayerIndex + ' saved and got ' + activePlayer.totalPoints);
     //display totalPoints of activePlayer;
   }
