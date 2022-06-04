@@ -165,14 +165,14 @@ class Field {
     while (stepsRemain > 0) {
       currentIndex += DOWNWARDS;
       if (currentIndex < length) {
-        if (!this.tiles[currentIndex].isFree) currentIndex += DOWNWARDS;
+        if (!this.tiles[currentIndex].isFree) stepsRemain++;
         stepsRemain--;
         continue;
       }
       currentIndex = (this.tiles[length - 1].isFree) ? length - 1 : length - 2;
       break;
     }
-
+    
     this.occupyTile(currentIndex);
     return currentIndex;
   }
@@ -185,7 +185,7 @@ class Field {
     while (stepsRemain > 0) {
       currentIndex += UPWARDS;
       if (currentIndex >= 0) {
-        if (!this.tiles[currentIndex].isFree) currentIndex += UPWARDS;
+        if (!this.tiles[currentIndex].isFree) stepsRemain++;
         stepsRemain--;
         continue;
       }
