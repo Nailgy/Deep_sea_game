@@ -1,6 +1,75 @@
+body {
+  background-color: #dbeef5;
+}
+
+.submarine {
+  position: absolute;
+  left: 3%;
+  top: 10%;
+  width: 200px;
+  height: 150px;
+  border: thick solid #444;
+  background-color: #062441;
+  border-radius: 40%;
+}
+
+.game--field {
+  position: absolute;
+  width: 1100px;
+  height: 520px;
+  left: 5%;
+  top: 27%;
+
+}
+
+.tile {
+  border: solid #444;
+  width: 100px;
+  height: 100px;
+  float: left;
+  margin: 10px 10px 10px 10px;
+}
+
+.level1 {
+  background-color: #55c7db;
+}
+
+.level2 {
+  background-color: #1e9eb4;
+}
+
+.level3 {
+  background-color: #0a6e80;
+}
+
+.level4 {
+  background-color: #064550;
+}
+
+
+.player {
+  position: absolute;
+  width: 17%;
+  right: 3%;
+  color: #444;
+  background: none;
+  border-color:#444;
+  font-size: 1.6rem;
+  padding: 0.6rem;
+  border-radius: 50rem;
+}
+
+.player--0 {
+  top: 1%;
+}
+
+.player--1 {
+  top: 33%;
+}
+
 .btn {
   position: absolute;
-  width: 23rem;
+  width: 20%;
   right: 3%;
   color: #444;
   background: none;
@@ -29,4 +98,20 @@
   bottom: 3%;
 }
 
+.dice {
+    position: absolute;
+    right: 20%;
+    bottom: 5%;
+    transform: translateX(-50%);
+    height: 16%;
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
+}
+
+.dice--0 {
+  right: 20%;
+}
+
+.dice--1 {
+  right: 30%;
+}
 

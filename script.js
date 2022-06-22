@@ -14,6 +14,22 @@ const btnMoveUp = document.querySelector('.btn--moveup');
 const btnRoll = document.querySelector('.btn--roll');
 const btnTake = document.querySelector('.btn--take');
 const btnSkip = document.querySelector('.btn--skip');
+const dice0El = document.querySelector('.dice--0');
+const dice1El = document.querySelector('.dice--1');
+
+const drawField = () => {
+  let gameField = document.querySelector('.game--field');
+  let tile;
+
+  for(let i = 0; i < LEVELS_OF_TREASURES.length; i++) {
+    for(let j = 0; j < TREASURES_AT_1_LEVEL; j++) {
+      tile = document.createElement('div');
+      tile.className = `tile level${i+1}`;
+      gameField.appendChild(tile);
+    }
+  }
+}
+drawField();
 
 const dup = (value, number) => {
   const arr = new Array(number);
@@ -28,9 +44,11 @@ const rand = (max, min = 0) => {
 
 const rollTwoDices = (diceValues) => {
   const max = diceValues.length;
-  const firstDiceIndex = rand(max);
-  const secondDiceIndex = rand(max);
-  return diceValues[firstDiceIndex] + diceValues[secondDiceIndex];
+  const firstDiceValue = diceValues[rand(max)];
+  const secondDiceValue = diceValues[rand(max)];
+  dice0El.src = `images/dice-${firstDiceValue}.png`
+  dice1El.src = `images/dice-${secondDiceValue}.png`
+  return firstDiceValue + secondDiceValue;
 };
 
 const randValueFromTreasure = (levelOfTreasure) => {
