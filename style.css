@@ -46,6 +46,10 @@ body {
   background-color: #064550;
 }
 
+.transparent {
+  opacity: 0.5;
+}
+
 
 .player {
   position: absolute;

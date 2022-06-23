@@ -10,25 +10,32 @@ const EMPTY_TILE = { value: 0, isFree: false };
 const SUBMARINE = { value: -1, isFree: true };
 const DOWNWARDS = 1;
 const UPWARDS = -1;
+
 const btnMoveUp = document.querySelector('.btn--moveup');
 const btnRoll = document.querySelector('.btn--roll');
 const btnTake = document.querySelector('.btn--take');
 const btnSkip = document.querySelector('.btn--skip');
 const dice0El = document.querySelector('.dice--0');
 const dice1El = document.querySelector('.dice--1');
+const tilesArray = ['submarine']; // need to place div with submarine here
 
 const drawField = () => {
   let gameField = document.querySelector('.game--field');
   let tile;
 
-  for(let i = 0; i < LEVELS_OF_TREASURES.length; i++) {
-    for(let j = 0; j < TREASURES_AT_1_LEVEL; j++) {
+  for (let i = 0; i < LEVELS_OF_TREASURES.length; i++) {
+    const lineOfTiles = [];
+    for (let j = 0; j < TREASURES_AT_1_LEVEL; j++) {
       tile = document.createElement('div');
       tile.className = `tile level${i+1}`;
+      lineOfTiles.push(tile);
       gameField.appendChild(tile);
     }
+    if (i % 2 === 1) lineOfTiles.reverse();
+    tilesArray.push(...lineOfTiles);
   }
 }
+
 drawField();
 
 const dup = (value, number) => {
