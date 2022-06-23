@@ -38,6 +38,14 @@ const drawField = () => {
 
 drawField();
 
+const clickable = (button) => {
+  button.classList.remove('disabled')
+}
+
+const unclickable = (button) => {
+  button.classList.add('disabled')
+}
+
 const dup = (value, number) => {
   const arr = new Array(number);
   arr.fill(value);
