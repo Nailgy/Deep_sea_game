@@ -20,32 +20,43 @@ const dice1El = document.querySelector('.dice--1');
 const tilesArray = ['submarine']; // need to place div with submarine here
 
 const drawField = () => {
-  let gameField = document.querySelector('.game--field');
+  const gameField = document.querySelector('.game--field');
   let tile;
 
   for (let i = 0; i < LEVELS_OF_TREASURES.length; i++) {
     const lineOfTiles = [];
     for (let j = 0; j < TREASURES_AT_1_LEVEL; j++) {
       tile = document.createElement('div');
-      tile.className = `tile level${i+1}`;
+      tile.className = `tile level${i + 1}`;
       lineOfTiles.push(tile);
       gameField.appendChild(tile);
     }
     if (i % 2 === 1) lineOfTiles.reverse();
     tilesArray.push(...lineOfTiles);
   }
-}
+};
 
 drawField();
 
-const clickable = (button) => {
+/*const clickable = (button) => {
   button.classList.remove('disabled')
-}
+}*/
 
 const unclickable = (button) => {
-  button.classList.add('disabled')
-}
+  button.classList.add('disabled');
+};
 
+const swapClickablity = (...buttons) => {
+  for (const button of buttons) {
+    if (button.classList.contains('disabled')) {
+      button.classList.remove('disabled');
+    } else {
+      button.classList.add('disabled');
+    }
+  }
+};
+
+console.dir(tilesArray);
 const dup = (value, number) => {
   const arr = new Array(number);
   arr.fill(value);
@@ -61,8 +72,8 @@ const rollTwoDices = (diceValues) => {
   const max = diceValues.length;
   const firstDiceValue = diceValues[rand(max)];
   const secondDiceValue = diceValues[rand(max)];
-  dice0El.src = `images/dice-${firstDiceValue}.png`
-  dice1El.src = `images/dice-${secondDiceValue}.png`
+  dice0El.src = `images/dice-${firstDiceValue}.png`;
+  dice1El.src = `images/dice-${secondDiceValue}.png`;
   return firstDiceValue + secondDiceValue;
 };
 
@@ -198,14 +209,16 @@ class Field {
     while (stepsRemain > 0) {
       currentIndex += DOWNWARDS;
       if (currentIndex < length) {
-        if (!this.tiles[currentIndex].isFree) stepsRemain++;
+        if (!this.tiles[currentIndex].isFree) {
+          stepsRemain++;
+        }
         stepsRemain--;
         continue;
       }
       currentIndex = (this.tiles[length - 1].isFree) ? length - 1 : length - 2;
       break;
     }
-    
+
     this.occupyTile(currentIndex);
     return currentIndex;
   }
@@ -218,7 +231,9 @@ class Field {
     while (stepsRemain > 0) {
       currentIndex += UPWARDS;
       if (currentIndex >= 0) {
-        if (!this.tiles[currentIndex].isFree) stepsRemain++;
+        if (!this.tiles[currentIndex].isFree) {
+          stepsRemain++;
+        }
         stepsRemain--;
         continue;
       }
@@ -226,7 +241,9 @@ class Field {
       break;
     }
 
-    if (currentIndex) this.occupyTile(currentIndex);
+    if (currentIndex) {
+      this.occupyTile(currentIndex);
+    }
     return currentIndex;
   }
 
@@ -243,13 +260,13 @@ const field = new Field(TREASURES_AT_1_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN, N
 //making skip and take button inactive in css
 btnMoveUp.addEventListener('click', () => {
   field.activePlayer.moveUp();
+  swapClickablity(btnMoveUp);
   console.dir('Player' + field.activeIndex + ' is moving up');
 });
 
 btnRoll.addEventListener('click', () => {
   const value = rollTwoDices(DICE_VALUES);
   console.dir(value + ' on dices');
-  //showing rolled dices on screen
   const dir = field.activePlayer.direction;
   const pos = field.activePlayer.position;
   const num = field.activePlayer.numberOfTreasures();
@@ -271,22 +288,37 @@ btnRoll.addEventListener('click', () => {
     console.dir('Player' + field.activeIndex + ' saved and got ' + field.activePlayer.totalPoints);
     //display totalPoints of activePlayer;
   }
+  swapClickablity(btnRoll, btnSkip);
+  if (field.tiles[newPos].value) {
+    swapClickablity(btnTake);
+  }
 });
 
 btnTake.addEventListener('click', () => {
   const pos = field.activePlayer.position;
   const treasure = field.takeTresure(pos);
-  if (treasure > 0) field.activePlayer.addTreasure(treasure);
+  if (treasure > 0) {
+    field.activePlayer.addTreasure(treasure);
+  }
   //removing treasure from field and giving it to player
   console.dir('Player' + field.activeIndex + ' got a treasure ' + treasure);
   field.checkOxygen();
   field.swapPlayer();
+  swapClickablity(btnRoll, btnTake, btnSkip);
+  if (field.activePlayer.direction === DOWNWARDS) {
+    swapClickablity(btnMoveUp);
+  }
   //blurring old player and making active another
 });
 
 btnSkip.addEventListener('click', () => {
   field.checkOxygen();
   field.swapPlayer();
+  swapClickablity(btnRoll, btnSkip);
+  if (field.activePlayer.direction === DOWNWARDS) {
+    swapClickablity(btnMoveUp);
+  }
+  unclickable(btnTake);
   //blurring old player and making active another
 });
 
