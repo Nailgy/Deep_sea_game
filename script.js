@@ -11,6 +11,7 @@ const SUBMARINE = { value: -1, isFree: true };
 const DOWNWARDS = 1;
 const UPWARDS = -1;
 
+const submarineEl = document.getElementById('submarine');
 const oxygenEl = document.getElementById('oxygen');
 const player0El = document.getElementById('player--0');
 const player1El = document.getElementById('player--1');
@@ -20,10 +21,10 @@ const btnTake = document.getElementById('btn--take');
 const btnSkip = document.getElementById('btn--skip');
 const dice0El = document.getElementById('dice--0');
 const dice1El = document.getElementById('dice--1');
-const submarineEl = document.getElementById('submarine');
-const tilesArray = [submarineEl];
 
-const drawField = () => {
+
+
+/*const drawField = () => {
   const gameField = document.getElementById('game--field');
   let tile;
 
@@ -76,7 +77,7 @@ const moveChip = (curPos, newPos, activeIndex) => {
     tile.className = `chip chip--${activeIndex}`;
     newTile.appendChild(tile);
   }
-};
+};*/
 
 const dup = (value, number) => {
   const arr = new Array(number);
@@ -108,6 +109,68 @@ const next = (currIndex, maxIndex, minIndex = 0) => {
   const newIndex = (currIndex < maxIndex) ? currIndex + 1 : minIndex;
   return newIndex;
 };
+
+
+class HtmlDisplay {
+  constructor(levelsOfTreasures, treasuresAtOneLevel) {
+    this.levelsOfTreasures = levelsOfTreasures;
+    this.treasuresAtOneLevel = treasuresAtOneLevel;
+    this.tilesArray = [submarineEl];
+  }
+
+  drawField() {
+    const gameField = document.getElementById('game--field');
+    let tile;
+    for (let i = 0; i < LEVELS_OF_TREASURES.length; i++) {
+      const lineOfTiles = [];
+      for (let j = 0; j < TREASURES_AT_1_LEVEL; j++) {
+        tile = document.createElement('div');
+        tile.className = `tile level${i + 1}`;
+        lineOfTiles.push(tile);
+        gameField.appendChild(tile);
+      }
+      if (i % 2 === 1) lineOfTiles.reverse();
+      this.tilesArray.push(...lineOfTiles);
+    }
+  }
+
+  unclickable(button) {
+    button.classList.add('disabled');
+  }
+
+  swapClickablity(...buttons) {
+    for (const button of buttons) {
+      button.classList.toggle('disabled');
+    }
+  }
+
+  updateInfo(element, info) {
+    element.textContent = info;
+  }
+
+  updateActive() {
+    player0El.classList.toggle('player--active');
+    player1El.classList.toggle('player--active');
+  }
+
+  updateEmptyTile(index) {
+    const curTile = this.tilesArray[index];
+    curTile.classList.add('empty');
+  }
+
+  moveChip(curPos, newPos, activeIndex) {
+    const curTile = this.tilesArray[curPos];
+    const newTile = this.tilesArray[newPos];
+    if (curPos) {
+      curTile.removeChild(curTile.firstChild);
+    }
+    if (newPos) {
+      const tile = document.createElement('div');
+      tile.className = `chip chip--${activeIndex}`;
+      newTile.appendChild(tile);
+    }
+  }
+}
 
 class Player {
   constructor(position = 0, treasures = []) {
@@ -162,12 +225,16 @@ class Player {
 }
 
 class Field {
-  constructor(treasuresAtOneLevel, levelsOfTreasures, maxOxygen, numOfPlayers) {
-    this.treasuresAtOneLevel = treasuresAtOneLevel;
+  constructor(levelsOfTreasures, treasuresAtOneLevel, maxOxygen, numOfPlayers) {
     this.levelsOfTreasures = levelsOfTreasures;
+    this.treasuresAtOneLevel = treasuresAtOneLevel;
     this.maxOxygen = maxOxygen;
     this.currentOxygen = maxOxygen;
+    this.numOfPlayers = numOfPlayers;
+    this.htmlDisplay = new HtmlDisplay(this.levelsOfTreasures, this.treasuresAtOneLevel);
+  }
 
+  createField() {
     let tiles = [SUBMARINE];
     for (const level of this.levelsOfTreasures) {
       const obj = { value: level, isFree: true };
@@ -176,8 +243,12 @@ class Field {
     }
     this.tiles = tiles;
 
+    this.htmlDisplay.drawField();
+  }
+
+  createPlayers() {
     const players = [];
-    for (let i = 0; i < numOfPlayers; i++) {
+    for (let i = 0; i < this.numOfPlayers; i++) {
       players.push(new Player());
     }
     this.players = players;
@@ -187,10 +258,12 @@ class Field {
 
   resetOxygen() {
     this.currentOxygen = this.maxOxygen;
+    this.htmlDisplay.updateInfo(oxygenEl, this.currentOxygen);
   }
 
   reduceOxygen(amount) {
     this.currentOxygen -= amount;
+    this.htmlDisplay.updateInfo(oxygenEl, this.currentOxygen);
   }
 
   checkOxygen() {
@@ -241,6 +314,7 @@ class Field {
     }
 
     this.occupyTile(currentIndex);
+    this.htmlDisplay.moveChip(startingIndex, currentIndex, this.activeIndex);
     return currentIndex;
   }
 
@@ -265,22 +339,28 @@ class Field {
     if (currentIndex) {
       this.occupyTile(currentIndex);
     }
+    this.htmlDisplay.moveChip(startingIndex, currentIndex, this.activeIndex);
     return currentIndex;
   }
 
   swapPlayer() {
     this.activeIndex = next(this.activeIndex, this.players.length - 1);
     this.activePlayer = this.players[this.activeIndex];
-    console.dir('--- SWAP TO ---     Player' + this.activeIndex);
+    this.htmlDisplay.updateActive();
   }
+
+  
 }
 
-const field = new Field(TREASURES_AT_1_LEVEL,
-  LEVELS_OF_TREASURES, MAX_OXYGEN, NUM_OF_PLAYERS);
+const field = new Field(LEVELS_OF_TREASURES,
+  TREASURES_AT_1_LEVEL, MAX_OXYGEN, NUM_OF_PLAYERS);
+
+field.createField();
+field.createPlayers();
 
 btnMoveUp.addEventListener('click', () => {
   field.activePlayer.moveUp();
-  swapClickablity(btnMoveUp);
+  field.htmlDisplay.swapClickablity(btnMoveUp);
   console.dir('Player' + field.activeIndex + ' is moving up');
 });
 
@@ -291,7 +371,6 @@ btnRoll.addEventListener('click', () => {
   const num = field.activePlayer.numberOfTreasures();
 
   field.reduceOxygen(num);
-  updateInfo(oxygenEl, field.currentOxygen);
   const newPos = (dir === DOWNWARDS) ?
     field.movePlayerDown(curPos, value, num) :
     field.movePlayerUp(curPos, value, num);
@@ -303,12 +382,7 @@ btnRoll.addEventListener('click', () => {
     console.dir('Player' + field.activeIndex +
     ' saved and got ' + field.activePlayer.totalPoints);
   }
-  moveChip(curPos, newPos, field.activeIndex);
 
-  swapClickablity(btnRoll, btnSkip);
-  if (field.tiles[newPos].value) {
-    swapClickablity(btnTake);
-  }
 });
 
 btnTake.addEventListener('click', () => {
@@ -316,28 +390,19 @@ btnTake.addEventListener('click', () => {
   const treasure = field.takeTresure(pos);
   if (treasure > 0) {
     field.activePlayer.addTreasure(treasure);
-    placeEmptyTile(pos);
+    field.htmlDisplay.updateEmptyTile(pos);
   }
-  const currTreasuresEl = document.
-    getElementById(`treasures--${field.activeIndex}`);
-  updateInfo(currTreasuresEl, field.activePlayer.treasures.toString());
+  const currTreasuresEl = document
+    .getElementById(`treasures--${field.activeIndex}`);
+  field.htmlDisplay.updateInfo(currTreasuresEl, field.activePlayer.treasures.toString());
   field.checkOxygen();
   field.swapPlayer();
-  highlightActive();
-  swapClickablity(btnRoll, btnTake, btnSkip);
-  if (field.activePlayer.direction === DOWNWARDS) {
-    swapClickablity(btnMoveUp);
-  }
+
 });
 
 btnSkip.addEventListener('click', () => {
   field.checkOxygen();
   field.swapPlayer();
-  highlightActive();
-  swapClickablity(btnRoll, btnSkip);
-  if (field.activePlayer.direction === DOWNWARDS) {
-    swapClickablity(btnMoveUp);
-  }
-  unclickable(btnTake);
+
 });
 
