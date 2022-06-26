@@ -21,8 +21,7 @@ const btnSkip = document.getElementById('btn--skip');
 const dice0El = document.getElementById('dice--0');
 const dice1El = document.getElementById('dice--1');
 const submarineEl = document.getElementById('submarine');
-const tilesArray = [submarineEl]; 
-
+const tilesArray = [submarineEl];
 
 const drawField = () => {
   const gameField = document.getElementById('game--field');
@@ -46,36 +45,25 @@ const unclickable = (button) => {
   button.classList.add('disabled');
 };
 
-/*const swapClickablity = (...buttons) => {
-  for (const button of buttons) {
-    if (button.classList.contains('disabled')) {
-      button.classList.remove('disabled');
-    }
-    else {
-      button.classList.add('disabled');
-    }
-  }
-};*/
-
 const swapClickablity = (...buttons) => {
-  for (let button of buttons) {
-  button.classList.toggle('disabled');
+  for (const button of buttons) {
+    button.classList.toggle('disabled');
   }
 };
 
 const updateInfo = (element, info) => {
   element.textContent = info;
-}
-//btnRoll.classList.toggle('disabled');
+};
+
 const highlightActive = () => {
   player0El.classList.toggle('player--active');
   player1El.classList.toggle('player--active');
-}
- 
+};
+
 const placeEmptyTile = (index) => {
   const curTile = tilesArray[index];
   curTile.classList.add('empty');
-}
+};
 
 const moveChip = (curPos, newPos, activeIndex) => {
   const curTile = tilesArray[curPos];
@@ -88,7 +76,7 @@ const moveChip = (curPos, newPos, activeIndex) => {
     tile.className = `chip chip--${activeIndex}`;
     newTile.appendChild(tile);
   }
-}
+};
 
 const dup = (value, number) => {
   const arr = new Array(number);
@@ -287,7 +275,8 @@ class Field {
   }
 }
 
-const field = new Field(TREASURES_AT_1_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN, NUM_OF_PLAYERS);
+const field = new Field(TREASURES_AT_1_LEVEL,
+  LEVELS_OF_TREASURES, MAX_OXYGEN, NUM_OF_PLAYERS);
 
 btnMoveUp.addEventListener('click', () => {
   field.activePlayer.moveUp();
@@ -297,27 +286,25 @@ btnMoveUp.addEventListener('click', () => {
 
 btnRoll.addEventListener('click', () => {
   const value = rollTwoDices(DICE_VALUES);
-  console.dir(value + ' on dices');
   const dir = field.activePlayer.direction;
   const curPos = field.activePlayer.position;
   const num = field.activePlayer.numberOfTreasures();
+
   field.reduceOxygen(num);
   updateInfo(oxygenEl, field.currentOxygen);
-  console.dir(field.currentOxygen + ' oxygen left \n');
-
   const newPos = (dir === DOWNWARDS) ?
-  field.movePlayerDown(curPos, value, num) :
-  field.movePlayerUp(curPos, value, num);
-
+    field.movePlayerDown(curPos, value, num) :
+    field.movePlayerUp(curPos, value, num);
   field.activePlayer.changePos(newPos);
-  console.dir('new placement of Player' + field.activeIndex + ' is ' + newPos);
+
 
   if (field.activePlayer.position === 0) {
     field.activePlayer.save();
-    console.dir('Player' + field.activeIndex + ' saved and got ' + field.activePlayer.totalPoints);
+    console.dir('Player' + field.activeIndex +
+    ' saved and got ' + field.activePlayer.totalPoints);
   }
-
   moveChip(curPos, newPos, field.activeIndex);
+
   swapClickablity(btnRoll, btnSkip);
   if (field.tiles[newPos].value) {
     swapClickablity(btnTake);
@@ -331,7 +318,8 @@ btnTake.addEventListener('click', () => {
     field.activePlayer.addTreasure(treasure);
     placeEmptyTile(pos);
   }
-  const currTreasuresEl = document.getElementById(`treasures--${field.activeIndex}`); 
+  const currTreasuresEl = document.
+    getElementById(`treasures--${field.activeIndex}`);
   updateInfo(currTreasuresEl, field.activePlayer.treasures.toString());
   field.checkOxygen();
   field.swapPlayer();
