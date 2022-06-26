@@ -8,42 +8,41 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="submarine">
-    <p class ="oxygen">25</p>
+  <div id="submarine">
+    <p id="oxygen">25</p>
   </div>
-  <div class="game--field"></div>
+  <div id="game--field"></div>
 
-  <section class ="player player--0 player--active">
+  <section class ="player player--active" id="player--0">
     <h3 class="name" id="name--0">Player 1 (Green)</h2>
-    <div class="current">
-      <p class="current-label">Current score:</p>
+    <div>
+      <p class="label">Current score:</p>
       <p class="current-score" id="current--0">0</p>
     </div>
-    <div class="current">
-      <p class="current-label">Current treasures:</p>
-      <p class="treasures treasures--0"></p>
-      
+    <div>
+      <p class="label">Total treasures:</p>
+      <p class="treasures" id="treasures--0"></p>
     </div>
   </section>
-  <section class ="player player--1">
+  
+  <section class ="player" id="player--1">
     <h3 class="name" id="name--1">Player 2 (Red)</h2>
-    <div class="current">
-      <p class="current-label">Current score:</p>
+    <div>
+      <p class="label">Total score:</p>
       <p class="current-score" id="current--1">0</p>
     </div>
-    <div class="current">
-      <p class="current-label">Current treasures:</p>
-      <p class="treasures treasures--1"></p>
-      
+    <div>
+      <p class="label">Current treasures:</p>
+      <p class="treasures" id="treasures--1"></p>
     </div>
   </section>
 
-  <img src="./images/dice-3.png" alt="Playing dice" class="dice dice--0" />
-  <img src="./images/dice-3.png" alt="Playing dice" class="dice dice--1" />
-  <button class="btn btn--moveup disabled">Move up</button>
-  <button class="btn btn--roll">Roll dices</button>
-  <button class="btn btn--take disabled">Take treasure</button>
-  <button class="btn btn--skip disabled">Skip</button>
+  <img src="./images/dice-3.png" alt="Playing dice" class="dice" id="dice--0"/>
+  <img src="./images/dice-3.png" alt="Playing dice" class="dice" id="dice--1"/>
+  <button class="btn disabled" id="btn--moveup">Move up</button>
+  <button class="btn" id="btn--roll">Roll dices</button>
+  <button class="btn disabled" id="btn--take">Take treasure</button>
+  <button class="btn disabled" id="btn--skip">Skip</button>
   <script src="script.js"></script>
 </body>
 </html>

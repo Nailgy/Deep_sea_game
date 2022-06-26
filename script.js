@@ -11,21 +11,21 @@ const SUBMARINE = { value: -1, isFree: true };
 const DOWNWARDS = 1;
 const UPWARDS = -1;
 
-const oxygenEl = document.querySelector('.oxygen');
-const player0El = document.querySelector('.player--0');
-const player1El = document.querySelector('.player--1');
-const btnMoveUp = document.querySelector('.btn--moveup');
-const btnRoll = document.querySelector('.btn--roll');
-const btnTake = document.querySelector('.btn--take');
-const btnSkip = document.querySelector('.btn--skip');
-const dice0El = document.querySelector('.dice--0');
-const dice1El = document.querySelector('.dice--1');
-const submarineEl = document.querySelector('.submarine');
+const oxygenEl = document.getElementById('oxygen');
+const player0El = document.getElementById('player--0');
+const player1El = document.getElementById('player--1');
+const btnMoveUp = document.getElementById('btn--moveup');
+const btnRoll = document.getElementById('btn--roll');
+const btnTake = document.getElementById('btn--take');
+const btnSkip = document.getElementById('btn--skip');
+const dice0El = document.getElementById('dice--0');
+const dice1El = document.getElementById('dice--1');
+const submarineEl = document.getElementById('submarine');
 const tilesArray = [submarineEl]; 
 
 
 const drawField = () => {
-  const gameField = document.querySelector('.game--field');
+  const gameField = document.getElementById('game--field');
   let tile;
 
   for (let i = 0; i < LEVELS_OF_TREASURES.length; i++) {
@@ -46,7 +46,7 @@ const unclickable = (button) => {
   button.classList.add('disabled');
 };
 
-const swapClickablity = (...buttons) => {
+/*const swapClickablity = (...buttons) => {
   for (const button of buttons) {
     if (button.classList.contains('disabled')) {
       button.classList.remove('disabled');
@@ -55,12 +55,18 @@ const swapClickablity = (...buttons) => {
       button.classList.add('disabled');
     }
   }
+};*/
+
+const swapClickablity = (...buttons) => {
+  for (let button of buttons) {
+  button.classList.toggle('disabled');
+  }
 };
 
 const updateInfo = (element, info) => {
   element.textContent = info;
 }
-
+//btnRoll.classList.toggle('disabled');
 const highlightActive = () => {
   player0El.classList.toggle('player--active');
   player1El.classList.toggle('player--active');
@@ -325,7 +331,7 @@ btnTake.addEventListener('click', () => {
     field.activePlayer.addTreasure(treasure);
     placeEmptyTile(pos);
   }
-  const currTreasuresEl = document.querySelector(`.treasures--${field.activeIndex}`); 
+  const currTreasuresEl = document.getElementById(`treasures--${field.activeIndex}`); 
   updateInfo(currTreasuresEl, field.activePlayer.treasures.toString());
   field.checkOxygen();
   field.swapPlayer();
