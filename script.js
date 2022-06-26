@@ -11,13 +11,18 @@ const SUBMARINE = { value: -1, isFree: true };
 const DOWNWARDS = 1;
 const UPWARDS = -1;
 
+const oxygenEl = document.querySelector('.oxygen');
+const player0El = document.querySelector('.player--0');
+const player1El = document.querySelector('.player--1');
 const btnMoveUp = document.querySelector('.btn--moveup');
 const btnRoll = document.querySelector('.btn--roll');
 const btnTake = document.querySelector('.btn--take');
 const btnSkip = document.querySelector('.btn--skip');
 const dice0El = document.querySelector('.dice--0');
 const dice1El = document.querySelector('.dice--1');
-const tilesArray = ['submarine']; // need to place div with submarine here
+const submarineEl = document.querySelector('.submarine');
+const tilesArray = [submarineEl]; 
+
 
 const drawField = () => {
   const gameField = document.querySelector('.game--field');
@@ -35,12 +40,7 @@ const drawField = () => {
     tilesArray.push(...lineOfTiles);
   }
 };
-
 drawField();
-
-/*const clickable = (button) => {
-  button.classList.remove('disabled')
-}*/
 
 const unclickable = (button) => {
   button.classList.add('disabled');
@@ -50,13 +50,40 @@ const swapClickablity = (...buttons) => {
   for (const button of buttons) {
     if (button.classList.contains('disabled')) {
       button.classList.remove('disabled');
-    } else {
+    }
+    else {
       button.classList.add('disabled');
     }
   }
 };
 
-console.dir(tilesArray);
+const updateInfo = (element, info) => {
+  element.textContent = info;
+}
+
+const highlightActive = () => {
+  player0El.classList.toggle('player--active');
+  player1El.classList.toggle('player--active');
+}
+ 
+const placeEmptyTile = (index) => {
+  const curTile = tilesArray[index];
+  curTile.classList.add('empty');
+}
+
+const moveChip = (curPos, newPos, activeIndex) => {
+  const curTile = tilesArray[curPos];
+  const newTile = tilesArray[newPos];
+  if (curPos) {
+    curTile.removeChild(curTile.firstChild);
+  }
+  if (newPos) {
+    const tile = document.createElement('div');
+    tile.className = `chip chip--${activeIndex}`;
+    newTile.appendChild(tile);
+  }
+}
+
 const dup = (value, number) => {
   const arr = new Array(number);
   arr.fill(value);
@@ -255,9 +282,7 @@ class Field {
 }
 
 const field = new Field(TREASURES_AT_1_LEVEL, LEVELS_OF_TREASURES, MAX_OXYGEN, NUM_OF_PLAYERS);
-//now do only js mechanics of game, html & css realisation will be added later
 
-//making skip and take button inactive in css
 btnMoveUp.addEventListener('click', () => {
   field.activePlayer.moveUp();
   swapClickablity(btnMoveUp);
@@ -268,26 +293,25 @@ btnRoll.addEventListener('click', () => {
   const value = rollTwoDices(DICE_VALUES);
   console.dir(value + ' on dices');
   const dir = field.activePlayer.direction;
-  const pos = field.activePlayer.position;
+  const curPos = field.activePlayer.position;
   const num = field.activePlayer.numberOfTreasures();
   field.reduceOxygen(num);
+  updateInfo(oxygenEl, field.currentOxygen);
   console.dir(field.currentOxygen + ' oxygen left \n');
 
-  let newPos;
-  if (dir === DOWNWARDS) {
-    newPos = field.movePlayerDown(pos, value, num);
-  } else {
-    newPos = field.movePlayerUp(pos, value, num);
-  }
+  const newPos = (dir === DOWNWARDS) ?
+  field.movePlayerDown(curPos, value, num) :
+  field.movePlayerUp(curPos, value, num);
+
   field.activePlayer.changePos(newPos);
   console.dir('new placement of Player' + field.activeIndex + ' is ' + newPos);
-  //moving player to new position on screen
 
   if (field.activePlayer.position === 0) {
     field.activePlayer.save();
     console.dir('Player' + field.activeIndex + ' saved and got ' + field.activePlayer.totalPoints);
-    //display totalPoints of activePlayer;
   }
+
+  moveChip(curPos, newPos, field.activeIndex);
   swapClickablity(btnRoll, btnSkip);
   if (field.tiles[newPos].value) {
     swapClickablity(btnTake);
@@ -299,26 +323,27 @@ btnTake.addEventListener('click', () => {
   const treasure = field.takeTresure(pos);
   if (treasure > 0) {
     field.activePlayer.addTreasure(treasure);
+    placeEmptyTile(pos);
   }
-  //removing treasure from field and giving it to player
-  console.dir('Player' + field.activeIndex + ' got a treasure ' + treasure);
+  const currTreasuresEl = document.querySelector(`.treasures--${field.activeIndex}`); 
+  updateInfo(currTreasuresEl, field.activePlayer.treasures.toString());
   field.checkOxygen();
   field.swapPlayer();
+  highlightActive();
   swapClickablity(btnRoll, btnTake, btnSkip);
   if (field.activePlayer.direction === DOWNWARDS) {
     swapClickablity(btnMoveUp);
   }
-  //blurring old player and making active another
 });
 
 btnSkip.addEventListener('click', () => {
   field.checkOxygen();
   field.swapPlayer();
+  highlightActive();
   swapClickablity(btnRoll, btnSkip);
   if (field.activePlayer.direction === DOWNWARDS) {
     swapClickablity(btnMoveUp);
   }
   unclickable(btnTake);
-  //blurring old player and making active another
 });
 

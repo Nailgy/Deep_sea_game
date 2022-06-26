@@ -4,32 +4,36 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deep Sea Game</title>
+  <title>Deep Sea</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="submarine"></div>
+  <div class="submarine">
+    <p class ="oxygen">25</p>
+  </div>
   <div class="game--field"></div>
 
   <section class ="player player--0 player--active">
-    <h2 class="name" id="name--0">Player 1</h2>
+    <h3 class="name" id="name--0">Player 1 (Green)</h2>
     <div class="current">
-      <p class="current-label">Current score</p>
+      <p class="current-label">Current score:</p>
       <p class="current-score" id="current--0">0</p>
     </div>
     <div class="current">
-      <p class="current-label">Current treasures</p>
+      <p class="current-label">Current treasures:</p>
+      <p class="treasures treasures--0"></p>
       
     </div>
   </section>
   <section class ="player player--1">
-    <h2 class="name" id="name--1">Player 2</h2>
+    <h3 class="name" id="name--1">Player 2 (Red)</h2>
     <div class="current">
-      <p class="current-label">Current score</p>
+      <p class="current-label">Current score:</p>
       <p class="current-score" id="current--1">0</p>
     </div>
     <div class="current">
-      <p class="current-label">Current treasures</p>
+      <p class="current-label">Current treasures:</p>
+      <p class="treasures treasures--1"></p>
       
     </div>
   </section>

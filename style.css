@@ -1,6 +1,6 @@
 body {
-  background-color: #dbeef5;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background-color: #deedf3;
+  font-family: Cambria;
 }
 
 .submarine {
@@ -12,6 +12,15 @@ body {
   border: thick solid #444;
   background-color: #062441;
   border-radius: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oxygen {
+  font-size: 75px;
+  font-family: Roboto;
+  color: aliceblue;
 }
 
 .game--field {
@@ -29,39 +38,57 @@ body {
   height: 100px;
   float: left;
   margin: 10px 10px 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .level1 {
-  background-color: #55c7db;
+  background-color: #62d2e6;
 }
 
 .level2 {
-  background-color: #1e9eb4;
+  background-color: #1a8da1;
 }
 
 .level3 {
-  background-color: #0a6e80;
+  background-color: #095a68;
 }
 
 .level4 {
-  background-color: #064550;
+  background-color: #042f36;
 }
 
-.transparent {
-  opacity: 0.5;
+.empty {
+  background-color: rgb(201, 207, 228);
+  border-radius: 50%;
 }
 
+.chip {
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+  border-radius: 50%;
+}
+
+.chip--0 {
+  background-color: rgb(12, 197, 36);
+  
+}
+
+.chip--1 {
+  background-color: rgb(202, 32, 32);
+}
 
 .player {
   position: absolute;
-  width: 17%;
+  width: 24%;
   right: 3%;
   color: #444;
   background: none;
-  border-color:#444;
   font-size: 1.6rem;
   padding: 0.6rem;
-  border-radius: 50rem;
+  opacity: 90%;
 }
 
 .player--0 {
@@ -72,6 +99,23 @@ body {
   top: 33%;
 }
 
+.player--active {
+  border: #444 thick solid;
+  opacity: 100%;
+}
+
+.current-label {
+  display: inline-block;
+}
+
+.current-score {
+  display: inline-block;
+}
+
+.treasures {
+  display: inline-block;
+}
+
 .btn {
   position: absolute;
   width: 20%;
@@ -79,11 +123,11 @@ body {
   color: #444;
   background: none;
   border-color:#444;
-  font-size: 1.8rem;
+  font-size: 30px;
   text-transform: uppercase;
   font-weight: 500;
   cursor: pointer;
-  padding: 0.6rem;
+  padding: 10px;
   border-radius: 50rem;
 }
 
