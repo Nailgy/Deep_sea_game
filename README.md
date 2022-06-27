@@ -1,6 +1,6 @@
-# Deep_sea_game
+# Deep Deep Sea Game
 The link to play game https://nailgy.github.io/Deep_sea_game/
-> **_NOTE:_** You should run the game on PC browser in fullscreen 
+> **Note**: You should run the game on PC browser in fullscreen 
 
 Deep Sea is a board game about sea divers that are hunting for the treasures.
 In the begging of the game there is 25 oxygen for both players. Both of them start at submarine at the top, and as they play they sink deeper and deeper.
