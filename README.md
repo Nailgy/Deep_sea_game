@@ -1,4 +1,4 @@
-# Deep Deep Sea Game
+# Deep Sea Game
 The link to play game https://nailgy.github.io/Deep_sea_game/
 > **Note**: You should run the game on PC browser in fullscreen 
 
