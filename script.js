@@ -34,14 +34,7 @@ const rand = (max, min = 0) => {
   return value; // right border does not include
 };
 
-const rollTwoDices = (diceValues) => {
-  const max = diceValues.length;
-  const firstDiceValue = diceValues[rand(max)];
-  const secondDiceValue = diceValues[rand(max)];
-  dice0El.src = `images/dice-${firstDiceValue}.png`;
-  dice1El.src = `images/dice-${secondDiceValue}.png`;
-  return firstDiceValue + secondDiceValue;
-};
+
 
 const randValueFromTreasure = (levelOfTreasure) => {
   const max = levelOfTreasure * RANGE_FOR_EACH_LEVEL;
@@ -78,6 +71,15 @@ class HtmlDisplay {
     }
   }
 
+  rollTwoDices(diceValues) {
+    const max = diceValues.length;
+    const firstDiceValue = diceValues[rand(max)];
+    const secondDiceValue = diceValues[rand(max)];
+    dice0El.src = `images/dice-${firstDiceValue}.png`;
+    dice1El.src = `images/dice-${secondDiceValue}.png`;
+    return firstDiceValue + secondDiceValue;
+  }
+
   unclickable(...buttons) {
     for (const button of buttons) {
       button.classList.add('disabled');
@@ -89,7 +91,7 @@ class HtmlDisplay {
       button.classList.remove('disabled');
     }
   }
-  
+
   updateInfo(element, info) {
     element.textContent = info;
   }
@@ -177,7 +179,8 @@ class Field {
     this.maxOxygen = maxOxygen;
     this.currentOxygen = maxOxygen;
     this.numOfPlayers = numOfPlayers;
-    this.htmlDisplay = new HtmlDisplay(this.levelsOfTreasures, this.treasuresAtOneLevel);
+    this.htmlDisplay = new HtmlDisplay(this.levelsOfTreasures,
+      this.treasuresAtOneLevel);
   }
 
   createField() {
@@ -281,8 +284,8 @@ class Field {
   }
 
   IfEnd() {
-    return (this.currentOxygen <= 0)  
-    || (this.players.every( (player) => player.isSaved));
+    return (this.currentOxygen <= 0) ||
+    (this.players.every((player) => player.isSaved));
   }
 
   swapPlayer() {
@@ -294,11 +297,9 @@ class Field {
   winnerText() {
     if (this.players[0].totalScore > this.players[1].totalScore) {
       return 'The winner is Player 1 (Green)!';
-    }
-    else if (this.players[0].totalScore < this.players[1].totalScore) {
+    } else if (this.players[0].totalScore < this.players[1].totalScore) {
       return 'The winner is Player 2 (Red)!';
-    }
-    else return 'Tie';
+    } else return 'Tie';
   }
 }
 
@@ -314,7 +315,7 @@ btnMoveUp.addEventListener('click', () => {
 });
 
 btnRoll.addEventListener('click', () => {
-  const value = rollTwoDices(DICE_VALUES);
+  const value = field.htmlDisplay.rollTwoDices(DICE_VALUES);
   const dir = field.activePlayer.direction;
   const curPos = field.activePlayer.position;
   const num = field.activePlayer.numberOfTreasures();
@@ -353,13 +354,14 @@ btnTake.addEventListener('click', () => {
   }
   const currTreasuresEl = document
     .getElementById(`treasures--${field.activeIndex}`);
-  field.htmlDisplay.updateInfo(currTreasuresEl, field.activePlayer.treasures.toString());
+  field.htmlDisplay.updateInfo(currTreasuresEl,
+    field.activePlayer.treasures.toString());
   field.swapPlayer();
-  if(field.activePlayer.isSaved) {
+  if (field.activePlayer.isSaved) {
     field.swapPlayer();
   }
 
-  if(field.activePlayer.direction === DOWNWARDS) {
+  if (field.activePlayer.direction === DOWNWARDS) {
     field.htmlDisplay.clickable(btnMoveUp);
   }
   field.htmlDisplay.clickable(btnRoll);
@@ -372,11 +374,11 @@ btnTake.addEventListener('click', () => {
 
 btnSkip.addEventListener('click', () => {
   field.swapPlayer();
-  if(field.activePlayer.isSaved) {
+  if (field.activePlayer.isSaved) {
     field.swapPlayer();
   }
 
-  if(field.activePlayer.direction === DOWNWARDS) {
+  if (field.activePlayer.direction === DOWNWARDS) {
     field.htmlDisplay.clickable(btnMoveUp);
   }
   field.htmlDisplay.clickable(btnRoll);
