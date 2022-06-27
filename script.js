@@ -13,6 +13,7 @@ const UPWARDS = -1;
 
 const submarineEl = document.getElementById('submarine');
 const oxygenEl = document.getElementById('oxygen');
+const winnerEl = document.getElementById('winner');
 const player0El = document.getElementById('player--0');
 const player1El = document.getElementById('player--1');
 const btnMoveUp = document.getElementById('btn--moveup');
@@ -21,63 +22,6 @@ const btnTake = document.getElementById('btn--take');
 const btnSkip = document.getElementById('btn--skip');
 const dice0El = document.getElementById('dice--0');
 const dice1El = document.getElementById('dice--1');
-
-
-
-/*const drawField = () => {
-  const gameField = document.getElementById('game--field');
-  let tile;
-
-  for (let i = 0; i < LEVELS_OF_TREASURES.length; i++) {
-    const lineOfTiles = [];
-    for (let j = 0; j < TREASURES_AT_1_LEVEL; j++) {
-      tile = document.createElement('div');
-      tile.className = `tile level${i + 1}`;
-      lineOfTiles.push(tile);
-      gameField.appendChild(tile);
-    }
-    if (i % 2 === 1) lineOfTiles.reverse();
-    tilesArray.push(...lineOfTiles);
-  }
-};
-drawField();
-
-const unclickable = (button) => {
-  button.classList.add('disabled');
-};
-
-const swapClickablity = (...buttons) => {
-  for (const button of buttons) {
-    button.classList.toggle('disabled');
-  }
-};
-
-const updateInfo = (element, info) => {
-  element.textContent = info;
-};
-
-const highlightActive = () => {
-  player0El.classList.toggle('player--active');
-  player1El.classList.toggle('player--active');
-};
-
-const placeEmptyTile = (index) => {
-  const curTile = tilesArray[index];
-  curTile.classList.add('empty');
-};
-
-const moveChip = (curPos, newPos, activeIndex) => {
-  const curTile = tilesArray[curPos];
-  const newTile = tilesArray[newPos];
-  if (curPos) {
-    curTile.removeChild(curTile.firstChild);
-  }
-  if (newPos) {
-    const tile = document.createElement('div');
-    tile.className = `chip chip--${activeIndex}`;
-    newTile.appendChild(tile);
-  }
-};*/
 
 const dup = (value, number) => {
   const arr = new Array(number);
@@ -134,16 +78,18 @@ class HtmlDisplay {
     }
   }
 
-  unclickable(button) {
-    button.classList.add('disabled');
-  }
-
-  swapClickablity(...buttons) {
+  unclickable(...buttons) {
     for (const button of buttons) {
-      button.classList.toggle('disabled');
+      button.classList.add('disabled');
     }
   }
 
+  clickable(...buttons) {
+    for (const button of buttons) {
+      button.classList.remove('disabled');
+    }
+  }
+  
   updateInfo(element, info) {
     element.textContent = info;
   }
@@ -177,7 +123,7 @@ class Player {
     this.position = position;
     this.treasures = treasures;
     this.direction = DOWNWARDS;
-    this.totalPoints = 0;
+    this.totalScore = 0;
     this.isSaved = false;
   }
 
@@ -194,7 +140,7 @@ class Player {
   save() {
     this.isSaved = true;
     for (const treasure of this.treasures) {
-      this.totalPoints += randValueFromTreasure(treasure);
+      this.totalScore += randValueFromTreasure(treasure);
     }
     this.treasures = [];
   }
@@ -218,7 +164,7 @@ class Player {
 
   countValueOfTreasures() {
     this.treasures.forEach((element) => {
-      this.totalPoints += randValueFromTreasure(element);
+      this.totalScore += randValueFromTreasure(element);
     });
     this.treasures = [];
   }
@@ -264,15 +210,6 @@ class Field {
   reduceOxygen(amount) {
     this.currentOxygen -= amount;
     this.htmlDisplay.updateInfo(oxygenEl, this.currentOxygen);
-  }
-
-  checkOxygen() {
-    if (this.currentOxygen <= 0) {
-      this.players.filter((player) => !player.isSaved).forEach((player) => {
-        player.reset();
-        console.dir(`${player} resetted `);
-      });
-    }
   }
 
   occupyTile(index) {
@@ -343,13 +280,26 @@ class Field {
     return currentIndex;
   }
 
+  IfEnd() {
+    return (this.currentOxygen <= 0)  
+    || (this.players.every( (player) => player.isSaved));
+  }
+
   swapPlayer() {
     this.activeIndex = next(this.activeIndex, this.players.length - 1);
     this.activePlayer = this.players[this.activeIndex];
     this.htmlDisplay.updateActive();
   }
 
-  
+  winnerText() {
+    if (this.players[0].totalScore > this.players[1].totalScore) {
+      return 'The winner is Player 1 (Green)!';
+    }
+    else if (this.players[0].totalScore < this.players[1].totalScore) {
+      return 'The winner is Player 2 (Red)!';
+    }
+    else return 'Tie';
+  }
 }
 
 const field = new Field(LEVELS_OF_TREASURES,
@@ -360,8 +310,7 @@ field.createPlayers();
 
 btnMoveUp.addEventListener('click', () => {
   field.activePlayer.moveUp();
-  field.htmlDisplay.swapClickablity(btnMoveUp);
-  console.dir('Player' + field.activeIndex + ' is moving up');
+  field.htmlDisplay.unclickable(btnMoveUp);
 });
 
 btnRoll.addEventListener('click', () => {
@@ -375,14 +324,23 @@ btnRoll.addEventListener('click', () => {
     field.movePlayerDown(curPos, value, num) :
     field.movePlayerUp(curPos, value, num);
   field.activePlayer.changePos(newPos);
-
+  if (field.activePlayer.position === field.tiles.length - 1) {
+    field.activePlayer.direction = UPWARDS;
+  }
 
   if (field.activePlayer.position === 0) {
     field.activePlayer.save();
-    console.dir('Player' + field.activeIndex +
-    ' saved and got ' + field.activePlayer.totalPoints);
+    const totalScoreEl = document
+      .getElementById(`total--${field.activeIndex}`);
+    field.htmlDisplay.updateInfo(totalScoreEl, field.activePlayer.totalScore);
+    field.swapPlayer();
   }
 
+  field.htmlDisplay.unclickable(btnMoveUp, btnRoll);
+  if (field.tiles[newPos].value > 0) {
+    field.htmlDisplay.clickable(btnTake);
+  }
+  field.htmlDisplay.clickable(btnSkip);
 });
 
 btnTake.addEventListener('click', () => {
@@ -391,18 +349,42 @@ btnTake.addEventListener('click', () => {
   if (treasure > 0) {
     field.activePlayer.addTreasure(treasure);
     field.htmlDisplay.updateEmptyTile(pos);
+
   }
   const currTreasuresEl = document
     .getElementById(`treasures--${field.activeIndex}`);
   field.htmlDisplay.updateInfo(currTreasuresEl, field.activePlayer.treasures.toString());
-  field.checkOxygen();
   field.swapPlayer();
+  if(field.activePlayer.isSaved) {
+    field.swapPlayer();
+  }
 
+  if(field.activePlayer.direction === DOWNWARDS) {
+    field.htmlDisplay.clickable(btnMoveUp);
+  }
+  field.htmlDisplay.clickable(btnRoll);
+  field.htmlDisplay.unclickable(btnTake, btnSkip);
+  if (field.IfEnd()) {
+    field.htmlDisplay.updateInfo(winnerEl, field.winnerText());
+    field.htmlDisplay.unclickable(btnMoveUp, btnRoll, btnSkip, btnTake);
+  }
 });
 
 btnSkip.addEventListener('click', () => {
-  field.checkOxygen();
   field.swapPlayer();
+  if(field.activePlayer.isSaved) {
+    field.swapPlayer();
+  }
 
+  if(field.activePlayer.direction === DOWNWARDS) {
+    field.htmlDisplay.clickable(btnMoveUp);
+  }
+  field.htmlDisplay.clickable(btnRoll);
+  field.htmlDisplay.unclickable(btnTake, btnSkip);
+
+  if (field.IfEnd()) {
+    field.htmlDisplay.updateInfo(winnerEl, field.winnerText());
+    field.htmlDisplay.unclickable(btnMoveUp, btnRoll, btnSkip, btnTake);
+  }
 });
 

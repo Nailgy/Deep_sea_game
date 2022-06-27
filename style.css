@@ -79,6 +79,13 @@ body {
   background-color: rgb(202, 32, 32);
 }
 
+#winner {
+  position: absolute;
+  top: 5%;
+  left: 30%;
+  font-size: 40px;
+}
+
 .player {
   position: absolute;
   width: 24%;
@@ -107,7 +114,7 @@ body {
   display: inline-block;
 }
 
-.current-score {
+.total-score {
   display: inline-block;
 }
 
