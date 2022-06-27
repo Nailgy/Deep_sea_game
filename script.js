@@ -34,8 +34,6 @@ const rand = (max, min = 0) => {
   return value; // right border does not include
 };
 
-
-
 const randValueFromTreasure = (levelOfTreasure) => {
   const max = levelOfTreasure * RANGE_FOR_EACH_LEVEL;
   const min = max - RANGE_FOR_EACH_LEVEL;
