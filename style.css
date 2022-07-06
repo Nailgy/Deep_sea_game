@@ -18,26 +18,26 @@ body {
 }
 
 #oxygen {
-  font-size: 75px;
+  font-size: 4vw;
   font-family: Roboto;
   color: aliceblue;
 }
 
 #game--field {
   position: absolute;
-  width: 60%;
+  width: 54%;
   height: 54%;
   left: 5%;
-  top: 25%;
+  top: 26%;
 
 }
 
 .tile {
   border: solid #444;
-  width: 5vw;
-  height: 10vh;
+  width: 4.5vw;
+  height: 9vh;
   float: left;
-  margin: 1vh 0.7vw;
+  margin: calc(1vh - 1px) calc(0.7vw - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,10 +114,12 @@ body {
   height: 30%;
   margin: 0%;
   text-align: center;
+  font-size: 2vw;
 }
 
 .text-block {
   height: 25%;
+  font-size: 1.4vw;
 }
 
 .label {
@@ -140,7 +142,7 @@ body {
   color: #444;
   background: none;
   border-color:#444;
-  font-size: 1.8rem;
+  font-size: 1.8vw;
   text-transform: uppercase;
   cursor: pointer;
   padding: 10px;
