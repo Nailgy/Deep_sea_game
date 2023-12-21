@@ -37,7 +37,7 @@ body {
   width: 4.5vw;
   height: 9vh;
   float: left;
-  margin: calc(1vh - 1px) calc(0.7vw - 1px);
+  margin: calc(1vh - 1px) calc(0.8vw - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
